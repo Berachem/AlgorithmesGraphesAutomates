@@ -41,13 +41,11 @@ def concatene(L1, L2):
 print(concatene(L1,L2))
 
 
-# A CORRIGER
 def puis(L1,n):
-    L3 = set()
-    for e1 in L1:
-        for e2 in L1:
-            L3.add(e1+e2)
-    return list(filter(lambda s : len(s)==n,L3))
+    ans = L1[:]
+    for _ in range(n - 1):
+        ans = [word + char for word in ans for char in L1]
+    return ans
 
 L1=['aa','ab','ba','bb']
 print(puis(L1,2))
