@@ -45,7 +45,7 @@ def puis(L1,n):
     ans = L1[:]
     for _ in range(n - 1):
         ans = [word + char for word in ans for char in L1]
-    return ans
+    return list(set(ans))
 
 L1=['aa','ab','ba','bb']
 print(puis(L1,2))
