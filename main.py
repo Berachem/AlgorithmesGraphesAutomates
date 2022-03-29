@@ -2,7 +2,28 @@
 L1=['aa','ab','ba','bb']
 L2=['a', 'b', '']
 
+def pref(mot):
+    L = []
+    for i in range(len(mot)+1):
+        L.append(mot[:i])
+    return list(L)
 
+print(pref('coucou'))
+
+def suf(mot):
+    L = []
+    for i in range(len(mot)+1):
+        L.append(mot[i:])
+    return list(L)
+
+print(suf('coucou'))
+
+def fact(mot):
+    L = []
+    
+    return L
+
+print(fact('coucou'))
 
 def concatene(L1, L2):
     L3 = set()
