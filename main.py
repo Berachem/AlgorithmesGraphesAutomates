@@ -25,6 +25,12 @@ def fact(mot):
 
 print(fact('coucou'))
 
+
+def miroir(mot):
+    return "".join(mot[::-1])
+
+print(miroir('coucou'))
+
 def concatene(L1, L2):
     L3 = set()
     for e1 in L1:
