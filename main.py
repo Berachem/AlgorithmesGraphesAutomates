@@ -64,3 +64,14 @@ def tousmots(L1,n):
     return list(filter(lambda mot: len(mot)<=n,L))
 
 print("tousmots -> ",tousmots(['a','b'],3))
+
+def defauto():
+    auto = dict()
+    auto ['alphabets']
+    auto ['etats']
+    auto ['transitions']
+    auto ['I']
+    auto ['F']
+    
+    auto['alphabets'] = list(set(input("Entrez l'alphabet (le séparateur est un espace) : ").split(" ")))
+    auto['etats'] = list(set(input("Entrez le nom des états (le séparateur est un espace) : ").split(" ")))
