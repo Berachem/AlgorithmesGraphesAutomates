@@ -315,3 +315,42 @@ auto4 ={"alphabet":['a','b'],"etats": [0,1,2,],
 auto5 ={"alphabet":['a','b'],"etats": [0,1,2],
 "transitions":[[0,'a',0],[0,'b',1],[1,'a',1],[1,'b',2],[2,'a',2],[2,'b',0]],
 "I":[0],"F":[0,1]}
+
+def inter(auto1,auto2):
+    autos = [auto1,auto2]
+    etats = [(auto1["I"][0],auto2["I"][0])]
+    transitions = list()
+    cptMarquage = 0
+    while cptMarquage<len(etats):
+        
+        for couple in etats:
+            
+            for i in range(len(etats[cptMarquage])):
+                for lettre in autos[i]['alphabet']:
+                    listeEtatArriveAvecLettre = lirelettre(autos[i]['transitions'],[etats[cptMarquage][i]], lettre)
+                    print("avec un "+lettre+" on peut aller d'un "+str(etats[cptMarquage][i]) + " à "+str(listeEtatArriveAvecLettre) + " cf automate " + str(i+1))
+                    for EtatArrive in listeEtatArriveAvecLettre:
+                        
+                        coupleDestination = list(etats[cptMarquage])
+                        coupleDestination[i] = EtatArrive
+                        coupleDestination = tuple(coupleDestination)
+                        if [etats[cptMarquage], lettre, coupleDestination] not in transitions:
+                            transitions.append([etats[cptMarquage],lettre,coupleDestination])
+                            print([etats[cptMarquage],lettre,coupleDestination])
+
+                        if (coupleDestination) not in etats:
+                            etats.append(coupleDestination)
+                            print(etats)
+                    
+        cptMarquage+=1
+    return {
+        'alphabet': auto1['alphabet'], 
+        'I': [tuple([auto1['I'][0],auto2['I'][0]])], 
+        'transitions': transitions, 
+        'etats': etats, 
+        'F': list(filter(lambda etat : etat[0] in auto1["F"] and etat[1] in auto2["F"], etats))
+    }
+    
+    
+print(inter(auto4,auto5))
+    
