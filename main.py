@@ -326,12 +326,13 @@ def inter(auto1,auto2):
         couple = etats[cptMarquage]
         for i in range(len(couple)):
             for lettre in autos[i]['alphabet']:
-                listeEtatArriveAvecLettre = lirelettre(autos[i]['transitions'],[couple[i]], lettre)
+                EtatArriveAvecLettre = lirelettre(autos[i]['transitions'],[couple[i]], lettre)
                 #print("avec un "+lettre+" on peut aller d'un "+str(couple[i]) + " à "+str(listeEtatArriveAvecLettre) + " cf automate " + str(i+1))
-                for EtatArrive in listeEtatArriveAvecLettre:
+                
+                if EtatArriveAvecLettre != []:
                     
                     coupleDestination = list(couple)
-                    coupleDestination[i] = EtatArrive
+                    coupleDestination[i] = EtatArriveAvecLettre[0]
                     coupleDestination = tuple(coupleDestination)
                     print(coupleDestination)
                     if [couple, lettre, coupleDestination] not in transitions:
