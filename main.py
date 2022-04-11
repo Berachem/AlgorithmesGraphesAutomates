@@ -323,24 +323,23 @@ def inter(auto1,auto2):
     cptMarquage = 0
     while cptMarquage<len(etats):
         
-        for couple in etats:
-            
-            for i in range(len(etats[cptMarquage])):
-                for lettre in autos[i]['alphabet']:
-                    listeEtatArriveAvecLettre = lirelettre(autos[i]['transitions'],[etats[cptMarquage][i]], lettre)
-                    print("avec un "+lettre+" on peut aller d'un "+str(etats[cptMarquage][i]) + " à "+str(listeEtatArriveAvecLettre) + " cf automate " + str(i+1))
-                    for EtatArrive in listeEtatArriveAvecLettre:
-                        
-                        coupleDestination = list(etats[cptMarquage])
-                        coupleDestination[i] = EtatArrive
-                        coupleDestination = tuple(coupleDestination)
-                        if [etats[cptMarquage], lettre, coupleDestination] not in transitions:
-                            transitions.append([etats[cptMarquage],lettre,coupleDestination])
-                            print([etats[cptMarquage],lettre,coupleDestination])
+        couple = etats[cptMarquage]
+        for i in range(len(couple)):
+            for lettre in autos[i]['alphabet']:
+                listeEtatArriveAvecLettre = lirelettre(autos[i]['transitions'],[couple[i]], lettre)
+                #print("avec un "+lettre+" on peut aller d'un "+str(couple[i]) + " à "+str(listeEtatArriveAvecLettre) + " cf automate " + str(i+1))
+                for EtatArrive in listeEtatArriveAvecLettre:
+                    
+                    coupleDestination = list(couple)
+                    coupleDestination[i] = EtatArrive
+                    coupleDestination = tuple(coupleDestination)
+                    print(coupleDestination)
+                    if [couple, lettre, coupleDestination] not in transitions:
+                        transitions.append([couple,lettre,coupleDestination])
+                        print([couple,lettre,coupleDestination])
 
-                        if (coupleDestination) not in etats:
-                            etats.append(coupleDestination)
-                            print(etats)
+                    if coupleDestination not in etats:
+                        etats.append(coupleDestination)
                     
         cptMarquage+=1
     return {
