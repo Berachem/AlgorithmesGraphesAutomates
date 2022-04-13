@@ -322,25 +322,28 @@ def inter(auto1,auto2):
     transitions = list()
     cptMarquage = 0
     while cptMarquage<len(etats):
-        
+        coupleDestination = [-1,-1]
         couple = etats[cptMarquage]
-        for i in range(len(couple)):
-            for lettre in autos[i]['alphabet']:
-                EtatArriveAvecLettre = lirelettre(autos[i]['transitions'],[couple[i]], lettre)
-                #print("avec un "+lettre+" on peut aller d'un "+str(couple[i]) + " à "+str(listeEtatArriveAvecLettre) + " cf automate " + str(i+1))
+        for lettre in autos[0]['alphabet']:
+            for i in range(len(couple)):
+                EtatArriveAvecLettre = lirelettre(autos[0]['transitions'],[couple[i]], lettre)[0]
+                if EtatArriveAvecLettre:
+                    coupleDestination[i] = EtatArriveAvecLettre
+                print("avec un "+lettre+" on peut aller d'un "+str(couple[i]) + " à "+str(EtatArriveAvecLettre) + " cf automate " + str(i+1))
                 
-                if EtatArriveAvecLettre != []:
-                    
-                    coupleDestination = list(couple)
-                    coupleDestination[i] = EtatArriveAvecLettre[0]
-                    coupleDestination = tuple(coupleDestination)
-                    print(coupleDestination)
-                    if [couple, lettre, coupleDestination] not in transitions:
-                        transitions.append([couple,lettre,coupleDestination])
-                        print([couple,lettre,coupleDestination])
+        if coupleDestination != [-1,-1]:
+            for j in range(len(coupleDestination)):
+                if coupleDestination[j]==-1:
+                    coupleDestination[j]= couple[j]
+            
+            coupleDestination = tuple(coupleDestination)
+            print(coupleDestination)
+            if [couple, lettre, coupleDestination] not in transitions:
+                transitions.append([couple,lettre,coupleDestination])
+                print([couple,lettre,coupleDestination])
 
-                    if coupleDestination not in etats:
-                        etats.append(coupleDestination)
+            if coupleDestination not in etats:
+                etats.append(coupleDestination)
                     
         cptMarquage+=1
     return {
@@ -352,5 +355,10 @@ def inter(auto1,auto2):
     }
     
     
-print(inter(auto4,auto5))
+print("Doc Test Intersection (doit être True) ->",inter(auto4,auto5) )
+      
+print( {'alphabet': ['a', 'b'], 'I': [(0, 0)], 
+'transitions': [[(0, 0), 'a', (1, 0)], [(1, 0), 'b', (2, 1)], [(2, 1), 'a', (2, 1)],
+                [(2, 1), 'b', (2, 2)],[(2, 2), 'a', (2, 2)], [(2, 2), 'b', (2, 0)], [(2, 0), 'a', (2, 0)],[(2, 0), 'b', (2, 1)]],
+'etats': [(0, 0), (1, 0), (2, 1), (2, 2), (2, 0)], 'F': [(2, 0), (2, 1)]})
     
