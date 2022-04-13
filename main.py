@@ -309,7 +309,7 @@ print("Doc Test pour savoir si le complement est bon (doit être True) -> ",comp
 
 # Produit
 
-auto4 ={"alphabet":['a','b'],"etats": [0,1,2,],
+auto4 ={"alphabet":['a','b'],"etats": [0,1,2],
 "transitions":[[0,'a',1],[1,'b',2],[2,'b',2],[2,'a',2]], "I":[0],"F":[2]}
 
 auto5 ={"alphabet":['a','b'],"etats": [0,1,2],
@@ -322,28 +322,29 @@ def inter(auto1,auto2):
     transitions = list()
     cptMarquage = 0
     while cptMarquage<len(etats):
-        coupleDestination = [-1,-1]
+        
         couple = etats[cptMarquage]
         for lettre in autos[0]['alphabet']:
+            coupleDestination = [-1,-1]
             for i in range(len(couple)):
-                EtatArriveAvecLettre = lirelettre(autos[0]['transitions'],[couple[i]], lettre)[0]
+                print(couple[i],"----",lettre)
+                EtatArriveAvecLettre = lirelettre(autos[i]['transitions'],[couple[i]], lettre)
                 if EtatArriveAvecLettre:
-                    coupleDestination[i] = EtatArriveAvecLettre
-                print("avec un "+lettre+" on peut aller d'un "+str(couple[i]) + " à "+str(EtatArriveAvecLettre) + " cf automate " + str(i+1))
+                    coupleDestination[i] = EtatArriveAvecLettre[0]
+                    
+            if coupleDestination != [-1,-1]:
+                for j in range(len(coupleDestination)):
+                    if coupleDestination[j]==-1:
+                        coupleDestination[j]= couple[j]
                 
-        if coupleDestination != [-1,-1]:
-            for j in range(len(coupleDestination)):
-                if coupleDestination[j]==-1:
-                    coupleDestination[j]= couple[j]
-            
-            coupleDestination = tuple(coupleDestination)
-            print(coupleDestination)
-            if [couple, lettre, coupleDestination] not in transitions:
-                transitions.append([couple,lettre,coupleDestination])
-                print([couple,lettre,coupleDestination])
+                coupleDestination = tuple(coupleDestination)
+                print(coupleDestination)
+                if [couple, lettre, coupleDestination] not in transitions:
+                    transitions.append([couple,lettre,coupleDestination])
+                    print([couple,lettre,coupleDestination])
 
-            if coupleDestination not in etats:
-                etats.append(coupleDestination)
+                if coupleDestination not in etats:
+                    etats.append(coupleDestination)
                     
         cptMarquage+=1
     return {
