@@ -427,10 +427,90 @@ autoDiffRenommage = {'alphabet': ['a', 'b'], 'etats': [0, 1, 2, 3, 4, 5, 6, 7],
 [7, 'a', 7], [7, 'b', 5]], 'I': [0], 'F': [6]}
 print("Différence et Renommage marche correctement (vérifiée à la main)")
 
-#Propriétés de fermeture
+# Propriétés de fermeture
 
 
 
-#Minimisation
+# Minimisation
+auto6 ={"alphabet":['a','b'],"etats": [0,1,2,3,4,5],
+"transitions":[[0,'a',4],[0,'b',3],[1,'a',5],[1,'b',5],[2,'a',5],[2,'b',2],[3,'a',1],[3,'b',0],
+[4,'a',1],[4,'b',2],[5,'a',2],[5,'b',5]],
+"I":[0],"F":[0,1,2,5]}
+
+def tableTransitions(auto):
+	table = dict()
+	nbLettres= len(auto["alphabet"])
+	for e in auto["etats"]:
+		table[e] = list()
+		for i in range(nbLettres):
+			table[e].append(lirelettre(auto['transitions'],[e],auto["alphabet"][i]))
+	return table
+
+def memeClasseEquivalenceAuRang(auto,rang,a,b):
+	for sous_classe in classe(auto,rang):
+		if a in sous_classe and b in sous_classe:
+			return True
+	return False
+
+def ajouteDansLaListe(listeClasse,e,e2):
+	added = False
+	for ensemble in listeClasse:
+		if e in ensemble or e2 in ensemble:
+			ensemble.add(e)
+			ensemble.add(e2)
+			added = True
+			break
+	if not added:
+		#On crée une classe juste pour eux deux
+		listeClasse.append(set([e,e2]))		
+		
+			
+
+def classe(auto,rang):
+	if rang ==0:
+		# On renvoie 2 classes : ceux terminaux et les autres
+		set_difference = set(auto['etats']) - set(auto["F"])
+		return [set_difference,set(auto["F"])]
+	else:
+		listeClasse = list()
+		
+		nbLettres= len(auto["alphabet"])
+		table = tableTransitions(auto)
+		for e in table.keys():
+			estEquivalentAvecLesAutres=[]
+			for e2 in table.keys():
+				if (e != e2):
+					
+					sontEquivalents = True
+					for i in range(nbLettres):
+						if not( memeClasseEquivalenceAuRang(auto,rang-1,e,e2) and\
+						memeClasseEquivalenceAuRang(auto,rang-1,table[e][i],table[e2][i])):
+							sontEquivalents = False
+							
+					if sontEquivalents:
+						#On les place dans la même sous liste
+						ajouteDansLaListe(listeClasse,e,e2)
+
+					estEquivalentAvecLesAutres.append(sontEquivalents)
+
+			if not(True in estEquivalentAvecLesAutres):
+				#On le place seul car il est équivalent à personne
+				listeClasse.append(set([e]))
+
+		return listeClasse
+
+def EtatMinimise(auto):
+	rang = 0
+	listeClasseActuel = None
+	while listeClasseActuel != classe(auto,rang):
+		listeClasseActuel = classe(auto,rang)
+		print(listeClasseActuel)
+		rang+=1
+	print(listeClasseActuel)
+						
+
+
+EtatMinimise(auto6)
+		
 
 
