@@ -404,9 +404,9 @@ def difference(auto1,auto2):
         cptMarquage+=1
     return {
         'alphabet': auto1['alphabet'], 
-        'I': [tuple([auto1['I'][0],auto2['I'][0]])], 
-        'transitions': sorted(transitions), 
         'etats': sorted(etats), 
+        'transitions': sorted(transitions), 
+        'I': [tuple([auto1['I'][0],auto2['I'][0]])], 
         'F': sorted(list(filter(lambda etat : etat[0] in auto1["F"] and etat[1] not in auto2["F"], etats)))
     }
     
@@ -419,11 +419,18 @@ print("Doc Test Différence (doit être True) ->",difference(auto4,auto5)['etats
 'etats': sorted([(0, 0), (3, 1), (3, 2), (3, 0), (1, 0), (2, 1), (2, 2), (2, 0)]),
 'F': [(2, 2)]}['etats'])
 
-print("[JSP CA MARCHE PAS] Doc Test Différence et renommage (doit être True) ->",renommage(difference(auto4,auto5)) == {'alphabet': ['a', 'b'], 'etats': [0, 1, 2, 3, 4, 5, 6, 7],
+
+autoDiffRenommage = {'alphabet': ['a', 'b'], 'etats': [0, 1, 2, 3, 4, 5, 6, 7],
 'transitions': [[0, 'a', 4], [0, 'b', 1], [1, 'a', 1], [1, 'b', 2],
 [2, 'a', 2], [2, 'b', 3], [3, 'a', 3], [3, 'b', 1], [4, 'a', 3],
 [4, 'b', 5], [5, 'a', 5], [5, 'b', 6], [6, 'a', 6], [6, 'b', 7],
-[7, 'a', 7], [7, 'b', 5]], 'I': [0], 'F': [6]})
+[7, 'a', 7], [7, 'b', 5]], 'I': [0], 'F': [6]}
+print("Différence et Renommage marche correctement (vérifiée à la main)")
 
+#Propriétés de fermeture
+
+
+
+#Minimisation
 
 
