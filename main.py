@@ -429,9 +429,56 @@ print("Différence et Renommage marche correctement (vérifiée à la main)")
 
 # Propriétés de fermeture
 
+def prefixe(auto):
+    new_F = []
+    for etat in auto['etats']:
+        new_F.append(etat)
+
+    return {"alphabet": auto['alphabet'], 
+            "etats": auto['etat'],
+            "transitions": auto['transitions'],
+            "I": auto['I'],
+            "F": new_F}
+
+def suffixe(auto):
+    new_I = []
+    for etat in auto['etats']:
+        new_I.append(etat)
+        
+    return {"alphabet": auto['alphabet'], 
+            "etats": auto['etat'],
+            "transitions": auto['transitions'],
+            "I": new_I,
+            "F": auto['F']}
+
+def facteur(auto):
+    new_F = []
+    new_I = []
+    for etat in auto['etats']:
+        new_F.append(etat)
+        new_I.append(etat)
+        
+    return {"alphabet": auto['alphabet'], 
+            "etats": auto['etat'],
+            "transitions": auto['transitions'],
+            "I": new_I,
+            "F": new_F}
+
+def miror(auto): # le nom n'est pas celui de l'énoncé car une fonction porte déjà le nom "miroir"
+    new_transitions = []
+    for transi in auto['transitions']:
+        # on inverse le sens des flèches
+        new_transitions.append([transi[2], transi[1], transi[0]])
+        
+    return {"alphabet": auto['alphabet'], 
+            "etats": auto['etat'],
+            "transitions": new_transitions,
+            "I": auto['F'],
+            "F": auto['I']}
 
 
 # Minimisation
+
 auto6 ={"alphabet":['a','b'],"etats": [0,1,2,3,4,5],
 "transitions":[[0,'a',4],[0,'b',3],[1,'a',5],[1,'b',5],[2,'a',5],[2,'b',2],[3,'a',1],[3,'b',0],
 [4,'a',1],[4,'b',2],[5,'a',2],[5,'b',5]],
