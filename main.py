@@ -1,4 +1,7 @@
 
+from traceback import print_tb
+
+
 L1=['aa','ab','ba','bb']
 L2=['a', 'b', '']
 
@@ -555,6 +558,42 @@ def classe(auto,rang):
 
         return listeClasse
 
+def reassembleAutomate(auto, lst_classes):
+    new_auto = {"alphabet": auto['alphabet'],
+                "etats": [],
+                "transitions": [],
+                "I": [],
+                "F": []}
+
+    # On determine l'etat initial
+    for classe in lst_classes:
+        if auto['I'][0] in classe:
+            etat_i = classe
+    new_auto['I'].append(list(etat_i))
+
+    # Les etats 
+    etats = []
+    for etat in lst_classes:
+        etats.append(list(etat))
+    new_auto['etats'] = etats
+
+    # Les transitions
+    for etat_depart in new_auto['etats']:
+        for lettre in auto['alphabet']:
+            etat_arrivée = lirelettre(auto['transitions'], etat_depart, lettre)
+            for classe in lst_classes:
+                if etat_arrivée[0] in classe:
+                    classe_arrivée = classe
+            new_auto['transitions'].append([list(etat_depart), lettre, list(classe_arrivée)])
+
+    # etats finaux
+    for classe in lst_classes:
+        for etat_f in auto['F']:
+            if etat_f in classe and list(classe) not in new_auto['F']:
+                new_auto['F'].append(list(classe))
+
+    return new_auto
+                
 def EtatMinimise(auto):
     rang = 0
     listeClassePrecedente = []
@@ -564,14 +603,22 @@ def EtatMinimise(auto):
         rang+=1
         listeClasseActuel = sorted(classe(auto,rang))
         print("rang ",rang," - ",listeClasseActuel)
+    return reassembleAutomate(auto, listeClasseActuel)
         
 						
 
+print()
+print()
+print()
+print("-----------------------------------")
+print(EtatMinimise(auto6))
+print()
+print()
+print("---------------------------------")
 
-EtatMinimise(auto6)
-print({'alphabet': ['a', 'b'], 'etats': [[0], [1, 2, 5], [3], [4]], 'I': [[0]],
+print({'alphabet': ['a', 'b'], 'etats': [[0], [1, 2, 5], [3], [4]], 
 'transitions': [[[0], 'a', [4]], [[0], 'b', [3]], [[1, 2, 5], 'a', [1, 2, 5]],
 [[1, 2, 5], 'b', [1, 2, 5]], [[3], 'a', [1, 2, 5]], [[3], 'b', [0]],
-[[4], 'a', [1, 2, 5]], [[4], 'b', [1, 2, 5]]], 'F': [[0], [1, 2, 5]]})
+[[4], 'a', [1, 2, 5]], [[4], 'b', [1, 2, 5]]], 'I': [[0]], 'F': [[0], [1, 2, 5]]})
 
 
