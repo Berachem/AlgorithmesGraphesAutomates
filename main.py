@@ -125,8 +125,8 @@ print("-----------------------------------------------")
 
 
 def accepte(auto, m):
-        # A CORRIGERRRRRRRR
-	return len(liremot(auto["transitions"],auto["etats"],m)) > 0
+	return any(map(lambda x : x in auto["F"], liremot(auto["transitions"],auto["etats"],m)))
+    
 
 	   
 	
