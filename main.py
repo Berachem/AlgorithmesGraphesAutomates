@@ -125,6 +125,7 @@ print("-----------------------------------------------")
 
 
 def accepte(auto, m):
+        # A CORRIGERRRRRRRR
 	return len(liremot(auto["transitions"],auto["etats"],m)) > 0
 
 	   
