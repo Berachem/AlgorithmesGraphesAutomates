@@ -1,7 +1,4 @@
 
-from traceback import print_tb
-
-
 L1=['aa','ab','ba','bb']
 L2=['a', 'b', '']
 
@@ -428,7 +425,7 @@ def difference(auto1,auto2):
         'etats': sorted(etats), 
         'transitions': sorted(transitions), 
         'I': [tuple([auto1['I'][0],auto2['I'][0]])], 
-        'F': sorted(list(filter(lambda etat : etat[0] in auto1["F"] and etat[1] not in auto2["F"], etats)))
+        'F': sorted(list(filter(lambda etat : etat[0] in auto1["F"] and etat[1] not in auto2["F"], etats))) 
     }
     
 print("Doc Test Différence (doit être True) ->",difference(auto4,auto5)['etats'] =={'alphabet': ['a', 'b'], 'I': [(0, 0)], 'transitions': sorted([[(0, 0), 'a', (1, 0)],
@@ -541,6 +538,9 @@ def ajouteDansLaListe(listeClasse, e, e2):
             
 
 def classe(auto,rang):
+    # Renvoie la classe d'équivalence à un certain rang d'un automate
+    # réprésenté sous la forme d'une liste d'ensembles
+    
     if rang ==0:
         # On renvoie 2 classes : ceux terminaux et les autres
         set_difference = set(auto['etats']) - set(auto["F"])
@@ -616,6 +616,8 @@ def reassembleAutomate(auto, lst_classes): # Réassemble l'automate à partir de
     return new_auto
                 
 def EtatMinimise(auto):
+    # Regarde quand on obtient deux classes d'équivalences équivalentes successives
+    # lorsque c'est le cas, on réassemble à partir de cet classe d'équivalence
     rang = 0
     listeClassePrecedente = []
     listeClasseActuel = sorted(classe(auto,rang))
