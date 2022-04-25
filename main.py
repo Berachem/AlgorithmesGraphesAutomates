@@ -33,7 +33,7 @@ print("facteur -> ",fact('coucou'))
 
 
 def miroir(mot):
-    return "".join(mot[::-1])
+    return "".join(mot[::-1]) # On parcours le mot à l'envers
 
 print("miroir -> ", miroir('coucou'))
 
@@ -48,27 +48,29 @@ print("concatene -> ",concatene(L1,L2))
 
 
 def puis(L1,n):
-    if n!=0:
+    if n != 0:
         ans = L1[:]
         for _ in range(n - 1):
-            ans = [word + char for word in ans for char in L1]
-        return list(set(ans))
+            ans = [word + char for word in ans for char in L1] # On concatene les mots de ans avec ceux de L1 n - 1 fois
+        return list(set(ans)) # On supprime les doublons avec set() 
     return ['']
 
 L1=['aa','ab','ba','bb']
 print("puissance (L^n) -> ",puis(L1,2))
 
+# Étant donné que A* a une taille infini, il est impossible de coder
+# une fonction le calculant
 
 def tousmots(L1,n):
-    L = set()
+    L = set() # set() pour éliminer les doublons
     for i in range(n+1):
-        L = L.union(set(puis(L1,i)))
+        L = L.union(set(puis(L1, i))) # On fait l'union des puis de 1 à n
         
     return list(filter(lambda mot: len(mot)<=n,L))
 
 print("tousmots -> ",tousmots(['a','b'],3))
 
-def initTransitions() :
+def initTransitions(): # Fonction intermédiaire
 	transi = list()
 	n = int(input("Combien y'a't'il de transistions ? : "))
 	for i in range(n):
@@ -94,26 +96,28 @@ def defauto():
 
     return auto
 
-#print(defauto())
+# print(defauto())
 
-auto ={"alphabet":['a','b'],"etats": [1,2,3,4],
+auto = {"alphabet":['a','b'],"etats": [1,2,3,4],
 "transitions":[[1,'a',2],[2,'a',2],[2,'b',3],[3,'a',4]],
 "I":[1],"F":[4]}
 print("L'automate de base est :", auto)
-
-
 
 def lirelettre(T, E, a):
 	lst = []
 	for transi in T:
 		if transi[1] == a and transi[0] in E:
+            # Si transi part d'un état de E et lis la letrre a, alors
+            # on ajoute l'état d'arriver.
 			lst.append(transi[2])
 	return list(set(lst))
       
 print("lirelettre -> ",lirelettre(auto["transitions"],auto["etats"],'a'))
 
 
-def liremot(T,E,m):
+def liremot(T,E,m): 
+    # On lis chaque lettre du mot jusqu'à ce que le mot soit fini
+    # puis on ajoute dans une liste l'états l'état d'arrivé de la dernière lettre
     new_E = E
     for a in m:
         new_E = lirelettre(T, new_E, a)
@@ -123,36 +127,43 @@ print("----------------------------------------------")
 print(liremot(auto["transitions"],auto["etats"],'aba'))
 print("-----------------------------------------------")
 
-
 def accepte(auto, m):
 	return any(map(lambda x : x in auto["F"], liremot(auto["transitions"],auto["etats"],m)))
+    # Si au moins un des états d'arrivés de liremot est dans la liste des états finaux de l'automate,
+    # cela signifie que l'automate accepte le mot.
+    # Alors on return true.
     
-
-	   
-	
 def langage_accept(auto, n):
 	liste = []
-	for m in tousmots(auto['alphabet'],n):
+	for m in tousmots(auto['alphabet'], n): 
+        # On vérifie pour chaque mot de longueur inférieur à n s'il est accepté
+        # par l'automate
 		if (accepte(auto,m)):
 			liste.append(m)
 	return liste
 
-def initNewDico(auto):
+# On ne peut pas faire de fonction calculant le langage accepté par 
+# un automate car ce langage peut contenir
+# une infinité de mots
+
+def initNewDico(auto): # Fonction intermédiaire
     occurencesLettre = dict()
     for l in auto['alphabet']:
-        occurencesLettre[l]=0
+        occurencesLettre[l] = 0
     return occurencesLettre
 
 def deterministe(auto):
-    if len(auto["I"])>1:
+    if len(auto["I"]) > 1:
         return False
         
     for etat in auto['etats']:
         tmpOccurencesLettre = initNewDico(auto)
         for t in auto['transitions']:
-            if etat==t[0]:
-                tmpOccurencesLettre[t[1]]+=1
-        if (any(filter(lambda x:x>1, tmpOccurencesLettre.values()))):
+            if etat == t[0]:
+                tmpOccurencesLettre[t[1]] += 1
+                # On compte le nombre d'ocurrences d'une lettre dans les états de départs d'une transition
+                # si la lettre apparait plus d'une fois, l'automate n'est pas deterministe.
+        if (any(filter(lambda x : x > 1, tmpOccurencesLettre.values()))):
             return False
     return True
 			
@@ -167,23 +178,23 @@ print("est déterministe ? doc Test 1 (doit être True) ->" ,deterministe(auto0)
 print("est déterministe ? doc Test 2 (doit être False) ->", deterministe(auto2))
 
 def determinise(auto):
-    I = [auto["I"]]
-    etats = I.copy()
+    I = [auto["I"]] 
+    etats = I.copy() 
     transitions = list()
     cptMarquage = 0
-    while cptMarquage<len(etats):
+    while cptMarquage < len(etats):
         
         for e in etats[cptMarquage]:
             for l in auto['alphabet']:
-                listeEtatArriveAvecLettre = lirelettre(auto['transitions'],etats[cptMarquage], l)
-                if (len(listeEtatArriveAvecLettre)>0):
+                listeEtatArriveAvecLettre = lirelettre(auto['transitions'], etats[cptMarquage], l)
+                if (len(listeEtatArriveAvecLettre) > 0):
                     if [etats[cptMarquage],l,listeEtatArriveAvecLettre] not in transitions:
                         transitions.append([etats[cptMarquage],l,listeEtatArriveAvecLettre])
 
                     if listeEtatArriveAvecLettre not in etats:
                         etats.append(listeEtatArriveAvecLettre)
                     
-        cptMarquage+=1
+        cptMarquage += 1
 
     F = []
     for e in auto["F"]:
@@ -194,9 +205,9 @@ def determinise(auto):
     
     return {
             'alphabet': auto["alphabet"],
-            'transitions' : transitions,
-            'etats':etats,
-            "I" :I,
+            'transitions': transitions,
+            'etats': etats,
+            "I": I,
             "F": F
             }
 		
@@ -210,25 +221,27 @@ print("déterminisation doc Test (doit être True) -> ",determinise(auto2)==auto
 
 def renommage(auto):
     cpt = 0
-    renomme=dict()
+    renomme = dict()
     for e in auto["etats"]:
+        # Pour chaque états, on associe un nombre qui s'incremente à chaque état
         renomme[frozenset(e)] = cpt
-        cpt+=1
+        cpt += 1
         
     etats = list(renomme.values())
     alphabet = auto["alphabet"]
     I = list(map(lambda e :renomme[frozenset(e)], auto["I"] ))
     F = list(map(lambda e :renomme[frozenset(e)], auto["F"] ))
-    transitions = list(map(lambda l : [renomme[frozenset(l[0])], l[1], renomme[frozenset(l[2])]], auto["transitions"] ))
+    transitions = list(map(lambda l : [renomme[frozenset(l[0])], l[1], renomme[frozenset(l[2])]], auto["transitions"]))
     return {'alphabet': alphabet, 
-'I': I, 
-'transitions': transitions, 
-'etats': etats, 
-'F': F}
+            'I': I, 
+            'transitions': transitions, 
+            'etats': etats, 
+            'F': F
+            }
 
 auto2Renomme = {'alphabet': ['a', 'b'], 'etats': [0, 1, 2],'transitions': [[0, 'a', 1], [1, 'a', 1],[1, 'b', 2], [2, 'a', 2], [2, 'b', 2]],'I': [0], 'F': [1, 2]}
 
-print("renommage doc Test (doit être True)-> ",renommage(determinise(auto2))==auto2Renomme)
+print("renommage doc Test (doit être True)-> ", renommage(determinise(auto2)) == auto2Renomme)
 
 
 # Complementation 
@@ -238,15 +251,17 @@ auto3 = {"alphabet":['a','b'],"etats": [0,1,2],
 
 def complet(auto):
   dico_verif = {}
-  for transi in auto['transitions']:
+
+  for transi in auto['transitions']: 
+      # On créer un dico avec comme clés des états et comme valeurs un ensemble contenant les lettres qui partent de cet états
     if transi[0] not in dico_verif.keys():
       dico_verif[transi[0]] = set()
     dico_verif[transi[0]].add(transi[1])
 
   for etat in dico_verif.keys():
+      # On vérifie que les états de l'automate ont autant de lettre qui partent d'eux qu'il y a de lettre dans l'alphabet
     if len(dico_verif[etat]) != len(auto['alphabet']):
       return False
-
   return True
 
 
@@ -282,10 +297,10 @@ def complete(auto):
     etats.append(nomEtatPuis)
 
     return {'alphabet': auto['alphabet'], 
-'I': auto['I'], 
-'transitions': transitions, 
-'etats': etats, 
-'F': auto['F']}
+            'I': auto['I'], 
+            'transitions': transitions, 
+            'etats': etats, 
+            'F': auto['F']}
 
 print()
 print("Doc Test pour savoir si ça complète bien (doit être True) -> " ,complete(auto0)=={'alphabet': ['a', 'b'], 'etats': [0, 1, 2, 3, 4],
@@ -305,6 +320,8 @@ def complement(auto):
         new_etat.append(etat)
 
   auto_new['F'] = new_etat
+  # Tous les états qui n'étaient pas terminaux le deviennent
+  # Et ceux qui l'etaient ne le sont plus
 
   return auto_new
 
@@ -373,14 +390,14 @@ print("Doc Test Intersection et renommage (doit être True) ->",renommage(inter(
 [4, 'b', 2]], 'I': [0], 'F': [4, 2]})
 
 def difference(auto1,auto2):
-    #On les redéfinis localement par leurs versions complétées
+    # On les redéfinis localement par leurs versions complétées
     auto1 = complete(auto1)
     auto2 = complete(auto2)
     autos = [auto1,auto2]
     etats = [(auto1["I"][0],auto2["I"][0])]
     transitions = list()
     cptMarquage = 0
-    while cptMarquage<len(etats):
+    while cptMarquage < len(etats):
         
         couple = etats[cptMarquage]
         for lettre in autos[0]['alphabet']:
@@ -437,6 +454,7 @@ def prefixe(auto):
     new_F = []
     for etat in auto['etats']:
         new_F.append(etat)
+        # Tous les états deviennent finaux
 
     return {"alphabet": auto['alphabet'], 
             "etats": auto['etat'],
@@ -448,6 +466,7 @@ def suffixe(auto):
     new_I = []
     for etat in auto['etats']:
         new_I.append(etat)
+        # Tous les états deviennent initiaux
         
     return {"alphabet": auto['alphabet'], 
             "etats": auto['etat'],
@@ -461,6 +480,7 @@ def facteur(auto):
     for etat in auto['etats']:
         new_F.append(etat)
         new_I.append(etat)
+        # Tous les états deviennent initiaux et finaux
         
     return {"alphabet": auto['alphabet'], 
             "etats": auto['etat'],
@@ -477,7 +497,7 @@ def miror(auto): # le nom n'est pas celui de l'énoncé car une fonction porte d
     return {"alphabet": auto['alphabet'], 
             "etats": auto['etat'],
             "transitions": new_transitions,
-            "I": auto['F'],
+            "I": auto['F'], # On inverse etat initiaux et terminaux
             "F": auto['I']}
 
 
@@ -506,7 +526,7 @@ def memeClasseEquivalenceAuRang(auto,rang,a,b):
             return True
     return False
 
-def ajouteDansLaListe(listeClasse,e,e2):
+def ajouteDansLaListe(listeClasse, e, e2):
     added = False
     for ensemble in listeClasse:
         if e in ensemble or e2 in ensemble:
@@ -515,7 +535,7 @@ def ajouteDansLaListe(listeClasse,e,e2):
             added = True
             break
     if not added:
-        #On crée une classe juste pour eux deux
+        # On crée une classe juste pour eux deux
         listeClasse.append(set([e,e2]))		
         
             
@@ -559,7 +579,7 @@ def classe(auto,rang):
 
         return listeClasse
 
-def reassembleAutomate(auto, lst_classes):
+def reassembleAutomate(auto, lst_classes): # Réassemble l'automate à partir des classes d'équivalences
     new_auto = {"alphabet": auto['alphabet'],
                 "etats": [],
                 "transitions": [],
@@ -601,7 +621,7 @@ def EtatMinimise(auto):
     listeClasseActuel = sorted(classe(auto,rang))
     while listeClasseActuel != listeClassePrecedente:
         listeClassePrecedente = listeClasseActuel
-        rang+=1
+        rang += 1
         listeClasseActuel = sorted(classe(auto,rang))
         print("rang ",rang," - ",listeClasseActuel)
     return reassembleAutomate(auto, listeClasseActuel)
@@ -620,5 +640,3 @@ print("---------------------------------")
 print("Doc Test renommage : ",renommage(EtatMinimise(auto6))=={'alphabet': ['a', 'b'], 'etats': [0, 1, 2, 3], 'transitions': [[0, 'a', 3],
 [0, 'b', 2], [1, 'a', 1], [1, 'b', 1], [2, 'a', 1], [2, 'b', 0], [3, 'a', 1],
 [3, 'b', 1]], 'I': [0], 'F': [0, 1]})
-
-
