@@ -506,6 +506,7 @@ auto6 ={"alphabet":['a','b'],"etats": [0,1,2,3,4,5],
 "I":[0],"F":[0,1,2,5]}
 
 def tableTransitions(auto):
+    # Renvoie la table de transitions d'un automate
     table = dict()
     nbLettres= len(auto["alphabet"])
     for e in auto["etats"]:
@@ -515,15 +516,15 @@ def tableTransitions(auto):
     return table
 
 def memeClasseEquivalenceAuRang(auto,rang,a,b):
+    # Renvoie vrai si a et b appartiennent à la meme
+    # classe d'équivalence à un rang 'rang'
     for sous_classe in classe(auto,rang):
-        #print("a : ",a," | b : ",b)
-        #print("classe : ",classe(auto,rang))
-        #print("sous-classe : ",sous_classe)
         if (a in sous_classe) and (b in sous_classe):
             return True
     return False
 
 def ajouteDansLaListe(listeClasse, e, e2):
+    # S'occupe de bien place deux etats équivalents
     added = False
     for ensemble in listeClasse:
         if e in ensemble or e2 in ensemble:
@@ -546,6 +547,7 @@ def classe(auto,rang):
         set_difference = set(auto['etats']) - set(auto["F"])
         return [set_difference,set(auto["F"])]
     else:
+        # On va s'aider de la table de transitions
         listeClasse = list()
         
         nbLettres= len(auto["alphabet"])
@@ -557,10 +559,9 @@ def classe(auto,rang):
                     
                     sontEquivalents = True
                     for i in range(nbLettres):
-                        #print("table : ",table[e][i]," ---- ",table[e2][i])
+                        # On applique la formule (ici négation) pour d'ils qu'ils NE sont PAS équivalents
                         if not( memeClasseEquivalenceAuRang(auto,rang-1,e,e2) and\
                         memeClasseEquivalenceAuRang(auto,rang-1,table[e][i],table[e2][i])):
-                            #print(e," et ",e2," ne sont pas équivalents...")
                             sontEquivalents = False
                             break
 
@@ -570,9 +571,7 @@ def classe(auto,rang):
                         ajouteDansLaListe(listeClasse,e,e2)
 
                     estEquivalentAvecLesAutres.append(sontEquivalents)
-            if (e==0):
-                ...
-                #print("on va mettre le zéro seul : ",estEquivalentAvecLesAutres)
+                    
             if not any(estEquivalentAvecLesAutres):
                 #On le place seul car il est équivalent à personne
                 listeClasse.append(set([e]))
