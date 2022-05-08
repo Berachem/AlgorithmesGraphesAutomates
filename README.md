@@ -15,13 +15,13 @@ En informatique théorique, l'objectif de la théorie des automates est de propo
 
 ## Programme #️⃣:
 
-Avant toutes choses, il est important de mentionner que le langage utilisé pour ce projet est python🐍.
+Avant toutes choses, il est important de mentionner que le langage utilisé pour ce projet est **python**🐍.
 
-Le programme est composé de plusieurs fonctions permettant de représenter et manipuler des langages et automates simplement. De plus, il est possible d'opérer plusieurs transformations sur ces automates comme la deterministation, la minimisation ou encore la complementation. 
+Le programme est composé de plusieurs fonctions permettant de représenter et manipuler des **langages** et **automates** simplement. De plus, il est possible d'opérer plusieurs transformations sur ces automates comme la **deterministation**, la **minimisation** ou encore la **complementation**. 
 
 Un automate est représenté par un dictionnaire ayant comme clés des chaines de caractères et comme valeurs des listes. Les voici :
-- "alphabet" : liste de caractères représentant l'alphabet de l'automate.
-- "etats" : liste de caractères représentant les états de l'automate.
-- "transitions" : liste de listes, ces dernières sont composées de trois éléments. L'état de départ, l'étiquette (caractère), l'état d'arrivée. Elles représentent les transitions de l'automate.
-- "I" : liste de caractères représentant les états initiaux de l'automate.
-- "F" : liste de caractères représentant les états terminaux de l'automate.
+- "alphabet" : liste de caractères représentant **l'alphabet** de l'automate. 🅱️
+- "etats" : liste de caractères représentant **les états** de l'automate. 🔹
+- "transitions" : liste de listes, ces dernières sont composées de trois éléments. L'état de départ, l'étiquette (caractère), l'état d'arrivée. Elles représentent les **transitions** de l'automate. ↔
+- "I" : liste de caractères représentant les états **initiaux** de l'automate. 🚩
+- "F" : liste de caractères représentant les états **terminaux** de l'automate. 🏁
