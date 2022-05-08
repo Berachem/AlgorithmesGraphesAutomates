@@ -1,4 +1,4 @@
-# ⚛️ Algorithmique -> Graphes & Automates
+# ⚛️ Algorithmique : Graphes & Automates
 ![download](https://user-images.githubusercontent.com/61350744/167305594-a64c5f66-7296-4549-8b49-1b4fa44d89a1.jpg)
 
 ## Définition : Graphes
