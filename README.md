@@ -15,7 +15,7 @@ En informatique théorique, l'objectif de la théorie des automates est de propo
 
 ## Programme #️⃣:
 
-Avant toutes choses, il est important de mentionner que le langage utilisé pour ce projet est **python**🐍.
+Avant toutes choses, il est important de mentionner que le langage utilisé pour ce projet est **Python**🐍.
 
 Le programme est composé de plusieurs fonctions permettant de représenter et manipuler des **langages** et **automates** simplement. De plus, il est possible d'opérer plusieurs transformations sur ces automates comme la **deterministation**, la **minimisation** ou encore la **complementation**. 
 
