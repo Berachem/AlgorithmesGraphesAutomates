@@ -620,6 +620,7 @@ def EtatMinimise(auto):
     rang = 0
     listeClassePrecedente = []
     listeClasseActuel = sorted(classe(auto,rang))
+    print("rang ",rang," - ",listeClasseActuel)
     while listeClasseActuel != listeClassePrecedente:
         listeClassePrecedente = listeClasseActuel
         rang += 1
