@@ -642,3 +642,46 @@ print("---------------------------------")
 print("Doc Test renommage : ",renommage(EtatMinimise(auto6))=={'alphabet': ['a', 'b'], 'etats': [0, 1, 2, 3], 'transitions': [[0, 'a', 3],
 [0, 'b', 2], [1, 'a', 1], [1, 'b', 1], [2, 'a', 1], [2, 'b', 0], [3, 'a', 1],
 [3, 'b', 1]], 'I': [0], 'F': [0, 1]})
+
+print("------Moment de stresse------")
+
+auto1 = {
+    'alphabet' : ['a', 'b'],
+    'etats' : [1,2,3,4],
+    'transitions' : [[1,'a',2], [1, "b" ,2], [2 , "b", 1], [2, "a", 4], [4, "a", 2], [3, "b", 4], [4, "b", 3], [1, "a", 3]],
+    'I' : [1,4],
+    'F' : [3,4]
+}
+
+print()
+print(renommage(determinise(auto1)))
+print()
+
+auto2 = {
+    'alphabet' : ['a', 'b'],
+    'etats' : [0,1],
+    'I' : [0],  
+    'F' : [0], 
+    'transitions' : [[0,'a',0], [0,'b',1],[1,'a',1],[1,'b',0]]
+}
+
+auto3 = {
+    'alphabet' : ['a', 'b'],
+    'etats' : [0,1,2],
+    'I' : [0],  
+    'F' : [0], 
+    'transitions' : [[0,'b',0], [0,'a',1],[1,'b',1],[1,'a',2],[2,'b',2],[2,'a',0]]
+}
+
+print(renommage(inter(auto2,auto3)))
+print()
+
+auto4 = {
+    'alphabet' : ['a', 'b'],
+    'etats': [1,2,3,4,5,6],
+    'I' : [1],  
+    'F' : [5,6],
+    'transitions' : [[1,'a',2],[1,'b',2] ,[2,'a',3],[2,'b',4],[3,'b',5],[3,'a',4],[4,'a',3],[4,'b',6],[5,'b',5],[5,'a',6],[6,'b',6],[6,'a',5]] 
+    
+}
+print(EtatMinimise(auto4))
